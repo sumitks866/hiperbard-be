@@ -4,11 +4,25 @@ const router = express.Router();
 const requireAuth = require("../../middleware/authMiddleware");
 
 const createProject = require("./create");
-const getByProjectID = require("./get");
-const getAllByCompanyID = require("./getlist");
+const getByProjectCode = require("./get");
+const {
+  getProjectsByCompany,
+  getProjectsByQuery,
+  getProjectsByCompanyPathname,
+} = require("./getlist");
 
 router.post("/create", requireAuth, createProject);
-router.get("/:projectID", requireAuth, getByProjectID);
-router.get("/byCompany/:companyID", requireAuth, getAllByCompanyID);
+
+router.get("/:projectID", requireAuth, getByProjectCode);
+
+router.get(
+  "/pathname/:companyPathname",
+  requireAuth,
+  getProjectsByCompanyPathname
+);
+
+router.get("/byCompany/:companyID", requireAuth, getProjectsByCompany);
+
+router.get("/", requireAuth, getProjectsByQuery);
 
 module.exports = router;

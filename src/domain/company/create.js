@@ -1,16 +1,17 @@
 const Company = require("../../database/model/company");
 
-async function createCompanySpace(name, adminEmail) {
-  if (!adminEmail) {
-    throw new Error("Admin email required");
+async function createCompanySpace(name, pathname, adminEmail) {
+  if (!adminEmail || !pathname) {
+    throw new Error("Workspace name, pathname and admin email are required.");
   }
-  const company = new Company({ name, adminEmails: [adminEmail] });
+  console.log({ name, pathname, adminEmail });
+  const company = new Company({ name, pathname, adminEmails: [adminEmail] });
   try {
     const savedCompany = await company.save();
     return savedCompany;
   } catch (err) {
-    throw new Error(`Error creating company: ${error.message}`);
+    throw new Error(`Error creating company: ${err.message}`);
   }
 }
 
-module.exports = createCompanySpace
+module.exports = createCompanySpace;

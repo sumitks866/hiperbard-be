@@ -20,6 +20,7 @@ const projectSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: true,
+    ref: "Company",
   },
 });
 

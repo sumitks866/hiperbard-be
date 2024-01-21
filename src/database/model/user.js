@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 
 const userRoleSchema = new mongoose.Schema({
   companyId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Company",
     required: true,
   },
   role: {

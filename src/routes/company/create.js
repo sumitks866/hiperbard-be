@@ -1,12 +1,14 @@
-const Company = require("../../domain/company");
+const createCompany = require("../../domain/utils/createCompany");
 
 async function createCompanySpace(req, res) {
-  const { name } = req.body;
+  const { name, invitees, pathname } = req.body;
   const { email } = req.decodedToken;
+  // console.log({ invitees, name, pathname });
   try {
-    const result = await Company.create(name, email);
+    const result = await createCompany(name, pathname, email);
     res.status(200).json(result);
   } catch (err) {
+    console.log({ err });
     res.sendStatus(500);
   }
 }

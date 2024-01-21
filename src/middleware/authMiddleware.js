@@ -8,7 +8,6 @@ const requireAuth = (req, res, next) => {
       if (err) {
         res.status(401).json({ error: err.message });
       } else {
-        console.log({ decodedToken });
         req.decodedToken = decodedToken;
         next();
       }

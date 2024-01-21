@@ -1,13 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const companySchema = new mongoose.Schema({
-//   id: {
-//     type: String,
-//     unique: true,
-//   },
   name: {
     type: String,
     required: true,
+  },
+  pathname: {
+    type: String,
+    required: true,
+    unique: true,
   },
   adminEmails: {
     type: [String],
@@ -17,8 +18,22 @@ const companySchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  projects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
+    },
+  ],
 });
 
-const Company = mongoose.model('Company', companySchema);
+companySchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+companySchema.set('toJSON', {
+  virtuals: true
+});
+
+const Company = mongoose.model("Company", companySchema);
 
 module.exports = Company;
