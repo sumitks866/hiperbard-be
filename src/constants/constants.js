@@ -33,8 +33,19 @@ const TaskStatus = {
   MERGED: "Merged",
 };
 
+const ActivityType = {
+  TASK_CREATED: "task_created",
+  ASSIGNEE_ADDED: "assignee_added",
+  DESCRIPTION_CHANGED: "description_changed",
+  PRIORITY_CHANGED: "priority_changed",
+  STATUS_CHANGED: "status_changed",
+  RELATED_TASK_ADDED: "related_task_added",
+  COMMENT_ADDED: "comment_added",
+};
+
 module.exports = {
   TaskPriority,
   TaskStatus,
   TaskType,
+  ActivityType,
 };

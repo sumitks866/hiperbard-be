@@ -1,5 +1,7 @@
 const Task = require("../../database/model/task");
 const Project = require("../../database/model/project");
+const { logActivity } = require("../activity");
+const { ActivityType } = require("../../constants/constants");
 
 const getLatestTaskCode = async (projectId) => {
   if (!projectId) return "";
@@ -23,6 +25,27 @@ async function createTask(taskData) {
 
     const task = new Task({ ...taskData, taskCode });
     const savedTask = await task.save();
+
+    logActivity(
+      savedTask._id,
+      ActivityType.TASK_CREATED,
+      savedTask.reporterEmail,
+      {
+        taskId: savedTask._id,
+      }
+    );
+
+    if (savedTask.assigneeEmail) {
+      logActivity(
+        savedTask._id,
+        ActivityType.ASSIGNEE_ADDED,
+        savedTask.reporterEmail,
+        {
+          taskId: savedTask._id,
+        }
+      );
+    }
+
     return savedTask;
   } catch (error) {
     console.log(error);

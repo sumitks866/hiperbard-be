@@ -35,7 +35,6 @@ const taskSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   relatedTaskIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
-  commentsId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 taskSchema.virtual("id").get(function () {
