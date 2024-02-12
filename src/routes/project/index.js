@@ -9,10 +9,12 @@ const {
   getProjectsByCompany,
   getProjectsByQuery,
   getProjectsByCompanyPathname,
+  getProjectActvities,
 } = require("./getlist");
 
 router.post("/create", requireAuth, createProject);
 
+router.get("/:projectID/activity", requireAuth, getProjectActvities);
 router.get("/:projectID", requireAuth, getByProjectCode);
 
 router.get(

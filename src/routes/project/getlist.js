@@ -36,9 +36,11 @@ async function getProjectsByCompany(req, res) {
 }
 
 async function getProjectsByCompanyPathname(req, res) {
-  const {companyPathname} = req.params;
+  const { companyPathname } = req.params;
   try {
-    const projects = await Project.getList.getProjectsByCompanyPathname(companyID);
+    const projects = await Project.getList.getProjectsByCompanyPathname(
+      companyID
+    );
     res.status(200).json(projects);
   } catch (err) {
     console.error(err);
@@ -46,9 +48,21 @@ async function getProjectsByCompanyPathname(req, res) {
   }
 }
 
+async function getProjectActvities(req, res) {
+  const { projectID } = req.params;
+  try {
+    const result = await Project.getList.getProjectActvities(projectID);
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(400);
+  }
+}
+
 module.exports = {
   getProjectsByCompany: getProjectsByCompany,
   getAllProjectsManagedBy: getAllProjectsManagedBy,
   getProjectsByQuery: getProjectsByQuery,
-  getProjectsByCompanyPathname
+  getProjectsByCompanyPathname,
+  getProjectActvities,
 };

@@ -19,8 +19,12 @@ async function getTasks(projectId, fields) {
     }
   });
 
+  if (filteredFields.labels) {
+    filteredFields.labels = { $in: filteredFields.labels };
+  }
+
   try {
-    const tasks = await Task.find({ ...fields, projectId }, { __v: 0 });
+    const tasks = await Task.find({ ...filteredFields, projectId }, { __v: 0 });
     return tasks;
   } catch (err) {
     console.log(err);

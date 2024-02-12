@@ -24,6 +24,7 @@ async function getTasks(req, res) {
     if (!projectId) {
       return res.status(400).json({ error: "Required project ID" });
     }
+
     const tasks = await Task.getTasks(projectId, req.query);
     res.status(200).json(tasks);
   } catch (err) {

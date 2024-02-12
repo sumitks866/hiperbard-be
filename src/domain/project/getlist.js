@@ -1,6 +1,9 @@
 const _ = require("lodash");
+const Task = require("../../database/model/task");
+const Activity = require("../../database/model/activity");
 const Project = require("../../database/model/project");
 const Company = require("../../database/model/company");
+const { getTasks } = require("../task");
 
 async function getProjectsByQuery({ name, code, manager, companyId }) {
   const filteredFields = _.omitBy(
@@ -58,9 +61,58 @@ async function getProjectsByCompanyPathname(pathname) {
   }
 }
 
+async function getProjectActvities(projectId) {
+  try {
+    const tasks = await Task.find({ projectId }, { _id: 1 });
+    const projectActivities = await Activity.aggregate([
+      {
+        $match: {
+          taskId: {
+            $in: tasks.map((task) => task._id),
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "tasks",
+          localField: "taskId",
+          foreignField: "_id",
+          as: "task",
+        },
+      },
+      {
+        $unwind: "$task",
+      },
+      {
+        $sort: { timestamp: -1 },
+      },
+      {
+        $project: {
+          _id: 1,
+          actorEmail: 1,
+          taskId: 1,
+          type: 1,
+          data: 1,
+          timestamp: 1,
+          task: {
+            _id: 1,
+            taskCode: 1,
+          },
+        },
+      },
+    ]);
+
+    return projectActivities;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 module.exports = {
   getProjectsByCompany: getProjectsByCompany,
   getAllProjectsManagedBy: getAllProjectsManagedBy,
-  getProjectsByQuery: getProjectsByQuery,
+  getProjectsByQuery,
   getProjectsByCompanyPathname,
+  getProjectActvities,
 };
